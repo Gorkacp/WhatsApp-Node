@@ -2,12 +2,13 @@ const express = require('express'); // Importa el módulo express
 const http = require('http'); // Importa el módulo http
 const socketIo = require('socket.io'); // Importa el módulo socket.io
 const cors = require('cors'); // Importa el módulo cors
+const path = require('path'); // Importa el módulo path
 
 const app = express(); // Crea una instancia de express
 const server = http.createServer(app); // Crea un servidor HTTP usando la instancia de express
 const io = socketIo(server, {
     cors: {
-        origin: "http://localhost:3001", // Permite solicitudes desde este origen
+        origin: "https://whatsapp-node-3.onrender.com", // Permite solicitudes desde este origen
         methods: ["GET", "POST"] // Permite estos métodos HTTP
     }
 });
@@ -18,6 +19,14 @@ app.use(cors()); // Usa el middleware cors para permitir solicitudes de diferent
 app.use(express.json()); // Usa el middleware para parsear JSON
 
 let users = []; // Array para almacenar los usuarios conectados
+
+// Agregar una ruta para la raíz para evitar "Cannot GET /"
+app.get('/', (req, res) => {
+    res.send('Servidor está funcionando correctamente');
+});
+
+// Sirve archivos estáticos desde la carpeta 'public'
+app.use(express.static(path.join(__dirname, '../public'))); // Cambié el path para servir archivos desde 'public/'
 
 // Maneja el evento de conexión de socket
 io.on('connection', (socket) => {
