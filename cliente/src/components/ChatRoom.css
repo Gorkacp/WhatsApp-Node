@@ -1,0 +1,70 @@
+.chat-list {
+    background-color: #f8f9fa;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid #dee2e6;
+}
+
+.chat-list h4 {
+    margin-top: 20px;
+}
+
+.chat-list .list-group-item {
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.chat-list .list-group-item:hover {
+    background-color: #e9ecef;
+}
+
+.user-profile {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.user-profile img {
+    margin-right: 10px;
+}
+
+.user-profile p {
+    margin: 0;
+}
+
+.chat-messages {
+    max-height: 70vh;
+    overflow-y: auto;
+    background-image: url('../images/image.png'); /* Ruta relativa a tu imagen de fondo */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.message-sent {
+    text-align: right;
+    background-color: #dcf8c6;
+    border-color: #badbcc;
+    border-radius: 15px 15px 0 15px;
+    padding: 10px;
+    margin: 5px 0;
+    max-width: 60%;
+    float: right;
+    clear: both;
+}
+
+.message-received {
+    text-align: left;
+    background-color: #ffffff;
+    border-color: #f5c2c7;
+    border-radius: 15px 15px 15px 0;
+    padding: 10px;
+    margin: 5px 0;
+    max-width: 60%;
+    float: left;
+    clear: both;
+}

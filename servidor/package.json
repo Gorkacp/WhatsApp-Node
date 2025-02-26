@@ -1,0 +1,19 @@
+{
+  "name": "mi-proyecto-servidor",
+  "version": "1.0.0",
+  "description": "Servidor para la aplicación mi-proyecto",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "react-icons": "^5.5.0",
+    "socket.io": "^4.8.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
