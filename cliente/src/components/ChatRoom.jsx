@@ -59,7 +59,7 @@ const ChatRoom = ({ socket, user }) => {
         socket.emit('stopTyping');
     };
 
-    const handleGroupClick = () => {
+    const handleChatGeneralClick = () => {
         setShowUsers(!showUsers);
     };
 
@@ -70,7 +70,7 @@ const ChatRoom = ({ socket, user }) => {
                     <h4 className="text-center my-4">Chats</h4>
                     <ListGroup>
                         {chats.map((chat) => (
-                            <ListGroup.Item key={chat.id} onClick={handleGroupClick}>
+                            <ListGroup.Item key={chat.id}>
                                 <strong>{chat.name}</strong>
                                 <p>{chat.lastMessage}</p>
                             </ListGroup.Item>
@@ -92,7 +92,7 @@ const ChatRoom = ({ socket, user }) => {
                     </div>
                 </Col>
                 <Col md={8} className="position-relative">
-                    <h2 className="text-center my-4">Chat General</h2>
+                    <h2 className="text-center my-4" onClick={handleChatGeneralClick}>Chat General</h2>
                     <ListGroup className="mb-3 chat-messages">
                         {messages.map((msg, index) => (
                             <ListGroup.Item key={index} className={msg.user === user.name ? 'message-sent' : 'message-received'}>
