@@ -5,66 +5,61 @@ const cors = require('cors'); // Importa el módulo cors
 
 const app = express(); // Crea una instancia de express
 const server = http.createServer(app); // Crea un servidor HTTP usando la instancia de express
-
-// Configura dinámicamente el origen de CORS según el entorno
-const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3001"; // Si CLIENT_URL no está en las variables de entorno, usa localhost
-
-// Configura Socket.io con CORS
 const io = socketIo(server, {
     cors: {
-        origin: CLIENT_URL, // Permite solicitudes solo desde el frontend
+        origin: "http://localhost:3001", // Permite solicitudes desde este origen
         methods: ["GET", "POST"] // Permite estos métodos HTTP
     }
 });
 
-const port = process.env.PORT || 3000; // Usa el puerto de la variable de entorno o 3000 como predeterminado
+const port = process.env.PORT || 3000; // Define el puerto en el que el servidor escuchará
 
-// Configura CORS en Express
-app.use(cors({
-    origin: CLIENT_URL,
-    methods: ["GET", "POST"]
-}));
+app.use(cors()); // Usa el middleware cors para permitir solicitudes de diferentes orígenes
+app.use(express.json()); // Usa el middleware para parsear JSON
 
-app.use(express.json()); // Middleware para manejar JSON
+let users = []; // Array para almacenar los usuarios conectados
 
-let users = []; // Lista de usuarios conectados
-
-// Manejar conexiones de sockets
+// Maneja el evento de conexión de socket
 io.on('connection', (socket) => {
     console.log('Nuevo cliente conectado');
 
+    // Maneja el evento 'join' cuando un usuario se une al chat
     socket.on('join', (user) => {
-        user.id = socket.id;
-        users.push(user);
-        io.emit('updateUserList', users);
-        socket.broadcast.emit('userJoined', user);
+        user.id = socket.id; // Asigna el ID del socket al usuario
+        users.push(user); // Agrega el usuario al array de usuarios
+        io.emit('updateUserList', users); // Emite la lista actualizada de usuarios a todos los clientes
+        socket.broadcast.emit('userJoined', user); // Emite un mensaje a todos los clientes excepto al que se unió
         console.log(`Usuario se unió: ${user.name}`);
     });
 
+    // Maneja el evento de desconexión de socket
     socket.on('disconnect', () => {
-        const user = users.find(user => user.id === socket.id);
+        const user = users.find(user => user.id === socket.id); // Encuentra el usuario que se desconectó
         if (user) {
-            users = users.filter(user => user.id !== socket.id);
-            io.emit('updateUserList', users);
-            socket.broadcast.emit('userLeft', user);
+            users = users.filter(user => user.id !== socket.id); // Elimina el usuario del array de usuarios
+            io.emit('updateUserList', users); // Emite la lista actualizada de usuarios a todos los clientes
+            socket.broadcast.emit('userLeft', user); // Emite un mensaje a todos los clientes excepto al que se desconectó
             console.log(`Usuario se fue: ${user.name}`);
         }
     });
 
+    // Maneja el evento 'typing' cuando un usuario está escribiendo
     socket.on('typing', (data) => {
-        socket.broadcast.emit('typing', data);
+        socket.broadcast.emit('typing', data); // Emite un mensaje a todos los clientes excepto al que está escribiendo
     });
 
+    // Maneja el evento 'stopTyping' cuando un usuario deja de escribir
     socket.on('stopTyping', () => {
-        socket.broadcast.emit('stopTyping');
+        socket.broadcast.emit('stopTyping'); // Emite un mensaje a todos los clientes excepto al que dejó de escribir
     });
 
+    // Maneja el evento 'sendMessage' cuando un usuario envía un mensaje
     socket.on('sendMessage', (message) => {
-        io.emit('newMessage', message);
+        io.emit('newMessage', message); // Emite el mensaje a todos los clientes
     });
 });
 
-// Inicia el servidor en el puerto especificado
+// Inicia el servidor y escucha en el puerto definido
 server.listen(port, () => {
     console.log(`El servidor está corriendo en http://localhost:${port}`);
 });
