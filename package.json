@@ -1,4 +1,12 @@
 {
+  "name": "whatsapp-node",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npm run start-client & npm run start-server",
+    "start-client": "npm --prefix cliente start",
+    "start-server": "npm --prefix servidor start"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "bootstrap": "^5.3.3",

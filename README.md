@@ -7,18 +7,24 @@ Este proyecto está dividido en dos partes: **cliente** y **servidor**.
 ```
 mi-proyecto
 ├── cliente
+│   ├── public
+│   │   └── images
+│   │       ├── avatars      # Carpeta img de los avatares
+│   │       └── image        # Resto de imagenes 
 │   ├── src
 │   │   ├── App.jsx          # Componente principal de la aplicación React
 │   │   ├── index.jsx        # Punto de entrada de la aplicación React
 │   │   └── components
-│   │       └── ExampleComponent.jsx  # Componente de ejemplo
+│   │       ├── ChatRoom.jsx # Componente de la sala de chat
+│   │       ├── ChatRoom.css # Estilo página chat
+│   │       ├── Login.jsx    # Componente de la sala de chat
+│   │       └── Login.css    # Estilo página login
 │   ├── package.json         # Configuración de npm para el cliente
 │   └── README.md            # Documentación del cliente
 ├── servidor
 │   ├── src
-│   │   ├── app.js           # Punto de entrada de la aplicación del servidor
-│   │   └── servicios
-│   │       └── exampleService.js  # Servicio de ejemplo
+│   │   └── app.js           # Punto de entrada de la aplicación del servidor
+│   │ 
 │   ├── package.json         # Configuración de npm para el servidor
 │   └── README.md            # Documentación del servidor
 └── README.md                # Documentación general del proyecto
@@ -26,9 +32,9 @@ mi-proyecto
 
 ## Descripción
 
-- **Cliente**: Esta parte del proyecto está construida con React y contiene todos los componentes necesarios para la interfaz de usuario. El archivo `App.jsx` es el componente principal que se encarga de renderizar la aplicación, mientras que `ExampleComponent.jsx` es un componente de ejemplo que puede ser utilizado dentro de `App`.
+- **Cliente**: Esta parte del proyecto está construida con React y contiene todos los componentes necesarios para la interfaz de usuario. El archivo `App.jsx` es el componente principal que se encarga de renderizar la aplicación, mientras que `ChatRoom.jsx` es el componente de la sala de chat. `Login.jsx` es un componente para iniciar sesion dentro de  `App`.
 
-- **Servidor**: Esta parte del proyecto maneja la lógica del backend. El archivo `app.js` configura el servidor y define las rutas y middleware necesarios. El servicio `exampleService.js` contiene funciones que pueden ser utilizadas para realizar operaciones específicas.
+- **Servidor**: Esta parte del proyecto maneja la lógica del backend. El archivo `app.js` configura el servidor y define las rutas y middleware necesarios.
 
 ## Instalación
 

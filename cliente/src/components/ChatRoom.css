@@ -1,21 +1,46 @@
-.chat-list {
-    background-color: #f8f9fa;
-    height: 100vh;
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Asegúrate de que ocupe toda la altura de la ventana */
+}
+
+.chat-messages {
+    flex: 1;
     overflow-y: auto;
-    border-right: 1px solid #dee2e6;
+    background-image: url('../../public/images/image.png'); /* Ruta relativa a tu imagen de fondo */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 10px;
+    border-radius: 10px;
 }
 
-.chat-list h4 {
-    margin-top: 20px;
+.chat-input {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #dee2e6;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: calc(100% - 40px); /* Ajusta el ancho para que no se superponga con los márgenes */
 }
 
-.chat-list .list-group-item {
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.chat-input button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.chat-list .list-group-item:hover {
-    background-color: #e9ecef;
 }
 
 .user-profile {
@@ -32,17 +57,6 @@
 
 .user-profile p {
     margin: 0;
-}
-
-.chat-messages {
-    max-height: 70vh;
-    overflow-y: auto;
-    background-image: url('../images/image.png'); /* Ruta relativa a tu imagen de fondo */
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    padding: 10px;
-    border-radius: 10px;
 }
 
 .message-sent {

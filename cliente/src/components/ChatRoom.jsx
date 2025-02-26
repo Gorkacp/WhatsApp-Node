@@ -59,7 +59,7 @@ const ChatRoom = ({ socket, user }) => {
     };
 
     return (
-        <Container fluid>
+        <Container fluid className="chat-container">
             <Row>
                 <Col md={4} className="chat-list">
                     <h4 className="text-center my-4">Chats</h4>
@@ -76,7 +76,7 @@ const ChatRoom = ({ socket, user }) => {
                         <p>{user.name}</p>
                     </div>
                 </Col>
-                <Col md={8}>
+                <Col md={8} className="position-relative">
                     <h2 className="text-center my-4">Chat General</h2>
                     <ListGroup className="mb-3 chat-messages">
                         {messages.map((msg, index) => (
@@ -87,8 +87,8 @@ const ChatRoom = ({ socket, user }) => {
                         ))}
                     </ListGroup>
                     {typing && <p className="text-muted">{typing}</p>}
-                    <Form>
-                        <Form.Group controlId="messageInput">
+                    <Form className="chat-input">
+                        <Form.Group controlId="messageInput" className="flex-grow-1">
                             <Form.Control
                                 type="text"
                                 placeholder="Escribe un mensaje..."
@@ -98,7 +98,7 @@ const ChatRoom = ({ socket, user }) => {
                                 onBlur={() => socket.emit('stopTyping')}
                             />
                         </Form.Group>
-                        <Button variant="primary" onClick={handleSendMessage} className="w-100">
+                        <Button variant="primary" onClick={handleSendMessage}>
                             Enviar
                         </Button>
                     </Form>
