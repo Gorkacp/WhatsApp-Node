@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "npm run start-client & npm run start-server",
-    "start-client": "npm --prefix cliente start",
-    "start-server": "npm --prefix servidor start"
-  },
+  "start": "concurrently \"npm run start-server\" \"npm run start-client\"",
+  "start-client": "npm --prefix cliente start",
+  "start-server": "npm --prefix servidor start"
+},
   "dependencies": {
+    "concurrently": "^8.2.0",
     "bcryptjs": "^3.0.2",
     "bootstrap": "^5.3.3",
     "jsonwebtoken": "^9.0.2",
