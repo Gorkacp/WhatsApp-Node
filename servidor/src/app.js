@@ -8,8 +8,8 @@ const app = express(); // Crea una instancia de express
 const server = http.createServer(app); // Crea un servidor HTTP usando la instancia de express
 const io = socketIo(server, {
     cors: {
-        origin: "https://whatsapp-node-3.onrender.com", // Permite solicitudes desde este origen
-        methods: ["GET", "POST"] // Permite estos métodos HTTP
+        origin: "http://localhost:3001", // Cambia esto si el frontend está en otro dominio
+        methods: ["GET", "POST"]
     }
 });
 
@@ -18,62 +18,52 @@ const port = process.env.PORT || 3000; // Define el puerto en el que el servidor
 app.use(cors()); // Usa el middleware cors para permitir solicitudes de diferentes orígenes
 app.use(express.json()); // Usa el middleware para parsear JSON
 
-// Sirve archivos estáticos desde la carpeta 'cliente/build'
-app.use(express.static(path.join(__dirname, '../../cliente/build')));
-
-// Agrega una ruta para la raíz
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../cliente/build', 'index.html'));
-});
-
-// Ruta de comodín para manejar todas las solicitudes y devolver el archivo 'index.html'
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../cliente/build', 'index.html'));
-});
-
 let users = []; // Array para almacenar los usuarios conectados
+
+// Sirve los archivos estáticos de React
+app.use(express.static(path.join(__dirname, '../cliente/build'))); // Apunta a la carpeta build de React
+
+// Ruta que maneja el acceso al login y otras rutas de tu aplicación React
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../cliente/build', 'index.html')); // Sirve index.html para cualquier ruta
+});
 
 // Maneja el evento de conexión de socket
 io.on('connection', (socket) => {
     console.log('Nuevo cliente conectado');
 
-    // Maneja el evento 'join' cuando un usuario se une al chat
     socket.on('join', (user) => {
-        user.id = socket.id; // Asigna el ID del socket al usuario
-        users.push(user); // Agrega el usuario al array de usuarios
-        io.emit('updateUserList', users); // Emite la lista actualizada de usuarios a todos los clientes
-        socket.broadcast.emit('userJoined', user); // Emite un mensaje a todos los clientes excepto al que se unió
+        user.id = socket.id;
+        users.push(user);
+        io.emit('updateUserList', users);
+        socket.broadcast.emit('userJoined', user);
         console.log(`Usuario se unió: ${user.name}`);
     });
 
-    // Maneja el evento de desconexión de socket
     socket.on('disconnect', () => {
-        const user = users.find(user => user.id === socket.id); // Encuentra el usuario que se desconectó
+        const user = users.find(user => user.id === socket.id);
         if (user) {
-            users = users.filter(user => user.id !== socket.id); // Elimina el usuario del array de usuarios
-            io.emit('updateUserList', users); // Emite la lista actualizada de usuarios a todos los clientes
-            socket.broadcast.emit('userLeft', user); // Emite un mensaje a todos los clientes excepto al que se desconectó
+            users = users.filter(user => user.id !== socket.id);
+            io.emit('updateUserList', users);
+            socket.broadcast.emit('userLeft', user);
             console.log(`Usuario se fue: ${user.name}`);
         }
     });
 
-    // Maneja el evento 'typing' cuando un usuario está escribiendo
     socket.on('typing', (data) => {
-        socket.broadcast.emit('typing', data); // Emite un mensaje a todos los clientes excepto al que está escribiendo
+        socket.broadcast.emit('typing', data);
     });
 
-    // Maneja el evento 'stopTyping' cuando un usuario deja de escribir
     socket.on('stopTyping', () => {
-        socket.broadcast.emit('stopTyping'); // Emite un mensaje a todos los clientes excepto al que dejó de escribir
+        socket.broadcast.emit('stopTyping');
     });
 
-    // Maneja el evento 'sendMessage' cuando un usuario envía un mensaje
     socket.on('sendMessage', (message) => {
-        io.emit('newMessage', message); // Emite el mensaje a todos los clientes
+        io.emit('newMessage', message);
     });
 });
 
-// Inicia el servidor y escucha en el puerto definido
+// Inicia el servidor
 server.listen(port, () => {
     console.log(`El servidor está corriendo en http://localhost:${port}`);
 });
