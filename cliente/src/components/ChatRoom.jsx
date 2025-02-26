@@ -8,6 +8,7 @@ const ChatRoom = ({ socket, user }) => {
     const [typing, setTyping] = useState('');
     const [chats, setChats] = useState([]); // Estado para almacenar la lista de chats
     const [users, setUsers] = useState([]); // Estado para almacenar la lista de usuarios conectados
+    const [showUsers, setShowUsers] = useState(false); // Estado para controlar la visibilidad de la lista de usuarios
 
     useEffect(() => {
         socket.on('newMessage', (message) => {
@@ -58,6 +59,10 @@ const ChatRoom = ({ socket, user }) => {
         socket.emit('stopTyping');
     };
 
+    const handleGroupClick = () => {
+        setShowUsers(!showUsers);
+    };
+
     return (
         <Container fluid className="chat-container">
             <Row>
@@ -65,12 +70,22 @@ const ChatRoom = ({ socket, user }) => {
                     <h4 className="text-center my-4">Chats</h4>
                     <ListGroup>
                         {chats.map((chat) => (
-                            <ListGroup.Item key={chat.id}>
+                            <ListGroup.Item key={chat.id} onClick={handleGroupClick}>
                                 <strong>{chat.name}</strong>
                                 <p>{chat.lastMessage}</p>
                             </ListGroup.Item>
                         ))}
                     </ListGroup>
+                    {showUsers && (
+                        <ListGroup className="user-list">
+                            {users.map((user) => (
+                                <ListGroup.Item key={user.id}>
+                                    <Image src={`/avatars/${user.avatar}`} roundedCircle width="30" height="30" className="mr-2" />
+                                    {user.name}
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    )}
                     <div className="user-profile">
                         <Image src={`/avatars/${user.avatar}`} roundedCircle width="50" height="50" />
                         <p>{user.name}</p>
