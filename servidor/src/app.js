@@ -18,15 +18,20 @@ const port = process.env.PORT || 3000; // Define el puerto en el que el servidor
 app.use(cors()); // Usa el middleware cors para permitir solicitudes de diferentes orígenes
 app.use(express.json()); // Usa el middleware para parsear JSON
 
-let users = []; // Array para almacenar los usuarios conectados
+// Sirve archivos estáticos desde la carpeta 'cliente/build'
+app.use(express.static(path.join(__dirname, '../../cliente/build')));
 
-// Agregar una ruta para la raíz para evitar "Cannot GET /"
+// Agrega una ruta para la raíz
 app.get('/', (req, res) => {
-    res.send('Servidor está funcionando correctamente');
+    res.sendFile(path.join(__dirname, '../../cliente/build', 'index.html'));
 });
 
-// Sirve archivos estáticos desde la carpeta 'public'
-app.use(express.static(path.join(__dirname, '../public'))); // Cambié el path para servir archivos desde 'public/'
+// Ruta de comodín para manejar todas las solicitudes y devolver el archivo 'index.html'
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../cliente/build', 'index.html'));
+});
+
+let users = []; // Array para almacenar los usuarios conectados
 
 // Maneja el evento de conexión de socket
 io.on('connection', (socket) => {

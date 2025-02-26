@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import Login from './components/Login';
 import ChatRoom from './components/ChatRoom';
 
-const socket = io('http://localhost:3000');
+const socket = io('https://whatsapp-node-3.onrender.com');
 
 const App = () => {
     const [user, setUser] = useState(null);
